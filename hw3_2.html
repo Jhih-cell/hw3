@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1 ,maximum-scale=1">
+    <title>Taipei attractions</title>
+    <script type="text/javascript">
+        function getData() {
+            var req = new XMLHttpRequest();
+            req.open("get", "https://padax.github.io/taipei-day-trip-resources/taipei-attractions.json")
+            req.onload = function () {
+                //分析JSON資料
+                var attdata = JSON.parse(req.responseText);
+                //測試有抓到資料
+                // alert(attdata.result.results[0].stitle)
+                // alert(attdata.result.results[0].file.replace(".JPG", ".jpg").split("jpghttp")[0] + "jpg")
+                //抓出各景點第一張圖片                
+                for (var i = 0; i < 8; i++) {
+                    let attImg = document.createElement('img');
+                    attImg.classList.add('img-width');
+                    let imgSrc = attdata.result.results[i].file.replace(".JPG", ".jpg").split("jpghttp")[0] + "jpg";
+                    attImg.setAttribute("src", imgSrc);
+
+
+                    document.querySelectorAll('.pictitle1')[i].appendChild(attImg);
+                }
+                //抓出景點名稱
+                for (var i = 0; i < 8; i++) {
+                    let attTitle = document.createElement('div');
+                    attTitle.classList.add('drawing');
+                    //加入景點名稱
+                    let textNode = document.createTextNode(attdata.result.results[i].stitle);
+                    attTitle.appendChild(textNode);
+
+                    document.querySelectorAll('.pictitle2')[i].appendChild(attTitle)
+                }
+
+            }
+            req.send();
+        }
+    </script>
+</head>
+<style>
+    body,
+    h1,
+    ul,
+    li {
+        margin: 0;
+        font-size: 20px;
+    }
+
+    li {
+        margin-left: 10px;
+    }
+
+    ul {
+        list-style: none;
+        line-height: 50px;
+        padding-right: 25px;
+    }
+
+    a {
+        text-decoration: none;
+    }
+
+    /* NavBar */
+    nav {
+        background: white;
+    }
+
+    nav h1 {
+        float: left;
+        line-height: 50px;
+        padding-left: 25px;
+
+    }
+
+    nav::after {
+        content: "";
+        display: block;
+        clear: both;
+    }
+
+    label img {
+        width: 30px;
+        vertical-align: middle;
+    }
+
+    /* menu*/
+    .menu {
+        clear: both;
+        background: #fff;
+    }
+
+
+    /* 下拉選單效果 */
+    .menu {
+        max-height: 0;
+        overflow: hidden;
+        transition: .2s;
+    }
+
+    input:checked~.menu {
+        max-height: 300px;
+    }
+
+
+
+    .website_nav {
+        font-size: 20px;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        list-style-type: none;
+    }
+
+    .nav {
+        width: 48px;
+        color: black;
+        margin-right: 10px;
+    }
+
+    .banner_out {
+        height: 300px;
+        background-color: #E0F8FF;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+    }
+
+    .banner_out .title {
+        font-size: 40px;
+        text-align: center;
+        vertical-align: middle;
+    }
+
+    .content {
+        margin-left: auto;
+        margin-right: auto;
+        display: flex;
+        justify-content: space-around;
+        align-items: flex-start;
+        flex-wrap: wrap;
+    }
+
+    main {
+        width: 1200px;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        margin-top: 30px;
+    }
+
+    .img-width {
+        display: block;
+        width: 100%;
+        margin: 0px auto;
+        
+    }
+
+
+    .pictitle {
+        width: 24%;
+        /* background-color: #E0F8FF; */
+        margin-bottom: 10px;
+
+    }
+
+    .pictitle1 {
+        position: relative;
+        z-index:1;
+        height: 70%;
+    }
+
+    .pictitle2 {
+
+        
+        height: 30%;
+        background-color: #E0F8FF;
+        position: relative;
+        z-index: 2;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-evenly;
+        
+        
+    }
+
+    .drawing {
+        font-size: 20px;
+        text-align: center;
+        height: 50%;
+        margin: auto;
+
+    }
+
+    /* 隱藏 checkbox */
+    input {
+        display: none;
+    }
+
+    /* 漢堡按鈕 */
+    label {
+        float: right;
+        padding-right: 30px;
+        line-height: 50px;
+        cursor: pointer;
+    }
+
+    label img {
+        width: 30px;
+        vertical-align: middle;
+    }
+
+    input:checked~.menu {
+        max-height: 250px;
+    }
+
+    @media (max-width:1200px) {
+        .pictitle {
+            width: 46%;
+            text-align: center;
+        }
+
+        main {
+            width: 90%;
+        }
+    }
+
+    @media (max-width:600px) {
+        .pictitle {
+            width: 100%;
+            text-align: center;
+        }
+
+        main {
+            width: 90%;
+        }
+
+
+    }
+
+    @media (min-width: 601px) {
+        label {
+            display: none;
+        }
+
+        .menu {
+            float: right;
+            clear: none;
+            max-height: 50px;
+        }
+
+        .menu li {
+            display: inline-block;
+        }
+    }
+</style>
+
+<body onload="getData();" style="margin:0px;">
+    <nav>
+        <h1>My Website</h1>
+        <label for="switch"><img src="img/hamburger.png"></label>
+        <input type="checkbox" id="switch">
+        <ul class="menu">
+            <li>Item1</li>
+            <li>Item2</li>
+            <li>Item3</li>
+            <li>Item4</li>
+        </ul>
+    </nav>
+    <div class="banner_out">
+        <div>
+            <h2 class="title">Welcome to MyHome</h2>
+        </div>
+
+    </div>
+    <div class="content">
+        <main class="pic">
+            <div class="pictitle">
+                <div class="pictitle1"></div>
+                <div class="pictitle2"></div>
+
+            </div>
+
+            <div class="pictitle">
+                <div class="pictitle1"></div>
+                <div class="pictitle2"></div>
+
+
+            </div>
+
+            <div class="pictitle">
+                <div class="pictitle1"></div>
+                <div class="pictitle2"></div>
+
+
+            </div>
+            <div class="pictitle">
+                <div class="pictitle1"></div>
+                <div class="pictitle2"></div>
+
+            </div>
+
+        </main>
+
+        <main class="pic">
+            <div class="pictitle">
+                <div class="pictitle1"></div>
+                <div class="pictitle2"></div>
+
+
+            </div>
+            <div class="pictitle">
+                <div class="pictitle1"></div>
+                <div class="pictitle2"></div>
+
+
+            </div>
+
+            <div class="pictitle">
+                <div class="pictitle1"></div>
+                <div class="pictitle2"></div>
+
+
+            </div>
+            <div class="pictitle">
+                <div class="pictitle1"></div>
+                <div class="pictitle2"></div>
+
+
+            </div>
+        </main>
+    </div>
+</body>
+
+</html>
